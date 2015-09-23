@@ -1,7 +1,7 @@
 FROM docker:dind
 
 RUN \
-  apk add --update bash openssh sudo openjdk7-jre-base && \
+  apk add --update bash openssh sudo openjdk7-jre-base git && \
   rm -rf /var/cache/apk/*
 
 RUN \
