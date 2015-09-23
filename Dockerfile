@@ -1,7 +1,7 @@
 FROM docker:dind
 
 RUN \
-  apk add --update openssh sudo openjdk7-jre-base && \
+  apk add --update bash openssh sudo openjdk7-jre-base && \
   rm -rf /var/cache/apk/*
 
 RUN \
@@ -9,8 +9,9 @@ RUN \
   rc-status && \
   touch /run/openrc/softlevel && \
   sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-  /etc/init.d/sshd start && \
-  /etc/init.d/sshd stop
+  ssh-keygen -t rsa1 -f /etc/ssh/ssh_host_key -N "" && \
+  ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N "" && \
+  ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ""
 
 RUN \
   adduser -D -s /bin/bash farmer && \
@@ -19,4 +20,6 @@ RUN \
 
 EXPOSE 22
 
-CMD ["/etc/init.d/sshd", "-D"]
+ADD slave-start.sh /
+
+CMD ["/slave-start.sh"]
