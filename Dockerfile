@@ -9,13 +9,14 @@ RUN \
   rc-status && \
   touch /run/openrc/softlevel && \
   sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-  ssh-keygen -t rsa1 -f /etc/ssh/ssh_host_key -N "" && \
-  ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N "" && \
-  ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ""
+  sed -i 's/^#PermitUserEnvironment no/PermitUserEnvironment yes/' /etc/ssh/sshd_config && \
+  ssh-keygen -A -N ''
 
 RUN \
   adduser -D -s /bin/bash farmer && \
   echo -n 'farmer:farmer' | chpasswd && \
+  mkdir /home/farmer/.ssh && \
+  echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' >> /home/farmer/.ssh/environment && \
   echo 'farmer ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/farmer
 
 EXPOSE 22
