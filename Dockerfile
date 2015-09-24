@@ -21,6 +21,4 @@ RUN \
 
 EXPOSE 22
 
-ADD slave-start.sh /
-
-CMD ["/slave-start.sh"]
+CMD ["/usr/sbin/sshd", "-D"]
