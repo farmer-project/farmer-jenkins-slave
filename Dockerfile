@@ -1,8 +1,11 @@
 FROM docker:dind
 
 RUN \
-  apk add --update bash openssh sudo openjdk7-jre-base git && \
+  apk add --update bash openssh sudo openjdk7-jre-base git supervisor && \
   rm -rf /var/cache/apk/*
+
+RUN mkdir -p /var/log/supervisor
+ADD supervisor.conf /etc/supervisor.conf
 
 RUN \
   rc-update add sshd && \
@@ -21,4 +24,4 @@ RUN \
 
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["supervisord", "-c", "/etc/supervisor.conf"]
