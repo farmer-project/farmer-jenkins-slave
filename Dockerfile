@@ -24,4 +24,5 @@ RUN \
 
 EXPOSE 22
 
+ENTRYPOINT []
 CMD ["supervisord", "-c", "/etc/supervisor.conf"]
