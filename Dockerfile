@@ -5,7 +5,7 @@ RUN \
   rm -rf /var/cache/apk/*
 
 RUN mkdir -p /var/log/supervisor
-ADD supervisor.conf /etc/supervisor.conf
+ADD supervisord.conf /etc/supervisord.conf
 
 RUN \
   rc-update add sshd && \
@@ -25,4 +25,4 @@ RUN \
 EXPOSE 22
 
 ENTRYPOINT []
-CMD ["supervisord", "-c", "/etc/supervisor.conf"]
+CMD ["supervisord"]
